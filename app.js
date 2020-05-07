@@ -9,11 +9,66 @@ const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
-const employee = new Engineer("Alice", 4 , "alice@gmail.com")
-
-console.log(employee)
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+function getEmployeeInfo() {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "role",
+            message: "What is this employee's position?",
+            choices: ["Engineer", "Manager", "Intern"]
+        },
+        {
+            type: "input",
+            name: "name",
+            message: "What is the employee's name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is the employee's ID?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is their email?"
+        }
+    ]).then(function (data) {
+        let name = data.name;
+        let id = data.id;
+        let email = data.email;
+        let role = data.role
+        let employee;
+
+        if (role == "Engineer") {
+            employee = new Engineer(name, id, email);
+        }
+
+        console.log(employee)
+    })
+}
+
+
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: "confirm",
+            name: "add",
+            message: "Would you like to add another employee?"
+        }
+    ]).then(function (data) {
+        if (data.add) {
+            getEmployeeInfo();
+        }
+        else {
+            console.log("No new employee")
+        }
+    })
+}
+
+getEmployeeInfo();
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
