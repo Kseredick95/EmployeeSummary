@@ -34,7 +34,7 @@ function getEmployeeInfo() {
             name: "email",
             message: "What is their email?"
         }
-    ]).then(function (data) {
+    ]).then(async function (data) {
         let name = data.name;
         let id = data.id;
         let email = data.email;
@@ -42,9 +42,50 @@ function getEmployeeInfo() {
         let employee;
 
         if (role == "Engineer") {
-            employee = new Engineer(name, id, email);
-        }
+            await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "github",
+                    message: "What is this employee's github username?"
+                }
+            ]).then(await function (data) {
 
+                employee = new Engineer(name, id, email, data.github);
+
+                return employee;
+            })
+
+        }
+        else if (role == "Intern") {
+            await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "school",
+                    message: "What is this employee's school?"
+                }
+            ]).then(await function (data) {
+
+                employee = new Intern(name, id, email, data.school);
+
+                return employee;
+            })
+
+        }
+        else if (role == "Manager") {
+            await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "office",
+                    message: "What is this employee's office number?"
+                }
+            ]).then(await function (data) {
+
+                employee = new Manager(name, id, email, data.office);
+
+                return employee;
+            })
+
+        }
         console.log(employee)
     })
 }
